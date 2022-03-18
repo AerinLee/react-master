@@ -1,23 +1,87 @@
-import React, { useContext, useState } from "react";
-import Cart from "./components/Cart/Cart";
-import Header from "./components/Header/Header";
-import Meals from "./components/Meals/Meals";
-import CartProvider from "./store/CartProvider";
+import React, { useState, useEffect, useCallback } from "react";
+
+import MoviesList from "./components_movie/MoviesList";
+import "./App.css";
+import AddMovie from "./components_movie/AddMovie";
 
 function App() {
-  const [cartIsShown, setCartIsShown] = useState(false)
+  const [movies, setMovies] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const toggleCartHanlder = () => {
-    setCartIsShown(!cartIsShown)
+  const fetchMoviesHandler = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+    /*
+     * default는 GET 임. fetch는 Promise를 반환함.
+     */
+
+    try {
+      const response = await fetch(
+        "https://react-master-prj-default-rtdb.asia-southeast1.firebasedatabase.app/movies.json"
+      );
+
+      if (!response.ok) {
+        throw new Error("Something went wrong!");
+      }
+
+      const data = await response.json();
+
+      const loadedMovies = []
+      for (const key in data){
+        loadedMovies.push({
+          id: key,
+          title: data[key].title,
+          openingText: data[key].openingText,
+          releaseDate: data[key].releaseDate,
+
+        })
+      }
+
+      setMovies(loadedMovies);
+    } catch (error) {
+      setError(error.message);
+    }
+    setIsLoading(false);
+  }, []);
+
+  useEffect(() => {
+    fetchMoviesHandler();
+  }, [fetchMoviesHandler]);
+
+  async function addMovieHandler(movie) {
+    console.log(movie);
+    const response = await fetch(
+      "https://react-master-prj-default-rtdb.asia-southeast1.firebasedatabase.app/movies.json",
+      {
+        method: "POST",
+        body: JSON.stringify(movie),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+      const data = await response.json();
+      console.log(data)
+
   }
+
   return (
-    <CartProvider>
-      {cartIsShown && <Cart closeCart={toggleCartHanlder}/>}
-      <Header openCart={toggleCartHanlder}/>
-      <main>
-        <Meals />
-      </main>
-    </CartProvider>
+    <React.Fragment>
+      <section>
+        <AddMovie onAddMovie={addMovieHandler} />
+      </section>
+      <section>
+        <button onClick={fetchMoviesHandler}>Fetch Movies</button>
+      </section>
+      <section>
+        {!isLoading && movies.length > 0 && <MoviesList movies={movies} />}
+        {!isLoading && movies.length === 0 && !error && <p>No Movies.......</p>}
+        {isLoading && <p>Loading........</p>}
+        {!isLoading && error && <p>{error}</p>}
+      </section>
+    </React.Fragment>
   );
 }
 
