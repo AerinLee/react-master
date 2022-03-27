@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
-import Cart from "./components/Cart/Cart";
-import Header from "./components/Header/Header";
-import Meals from "./components/Meals/Meals";
+import Cart from "./components_food_order/Cart/Cart";
+import Header from "./components_food_order/Header/Header";
+import Meals from "./components_food_order/Meals/Meals";
 import CartProvider from "./store/CartProvider";
 
 function App() {
