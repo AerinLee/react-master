@@ -4,7 +4,7 @@ import Header from "./components_redux_counter/Header";
 import Auth from "./components_redux_counter/Auth";
 import UserProfile from "./components_redux_counter/UserProfile";
 import { useSelector } from "react-redux";
-import { authActions } from "./store";
+import { authActions } from "./store/index_redux_counter";
 
 function App() {
 
