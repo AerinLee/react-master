@@ -7,8 +7,13 @@ const Products = (props) => {
       <h2>Buy your favorite products</h2>
       <ul>
         <ProductItem
-          title='Test'
-          price={6}
+          title='Redux book'
+          price={7}
+          description='This is a first product - amazing!'
+        />
+        <ProductItem
+          title='Flutter book'
+          price={10}
           description='This is a first product - amazing!'
         />
       </ul>

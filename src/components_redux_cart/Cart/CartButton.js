@@ -1,10 +1,16 @@
 import classes from "./CartButton.module.css";
 
 import { cartActions } from "../../store/index_redux_cart";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const CartButton = (props) => {
   const dispatch = useDispatch();
+
+  const items = useSelector(state => state.cart.cartItems)
+  let totalAmount = 0;
+  for(let key in items){
+    totalAmount += items[key].amount
+  }
 
   const toggleCart = () => {
     dispatch(cartActions.toggle());
@@ -12,7 +18,7 @@ const CartButton = (props) => {
   return (
     <button className={classes.button} onClick={toggleCart}>
       <span>My Cart</span>
-      <span className={classes.badge}>1</span>
+      <span className={classes.badge}>{totalAmount}</span>
     </button>
   );
 };

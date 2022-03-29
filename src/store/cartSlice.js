@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   showCart: true,
   cartItems: {
-    "Test Item": {
+    "My Book React": {
       amount: 3,
       price: 6.0,
     },
