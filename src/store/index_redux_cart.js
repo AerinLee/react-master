@@ -9,6 +9,5 @@ const store = configureStore({
   },
 });
 
-export const cartActions = cartSlice.actions;
 
 export default store;
