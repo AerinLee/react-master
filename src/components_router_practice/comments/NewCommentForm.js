@@ -7,14 +7,14 @@ import classes from "./NewCommentForm.module.css";
 const NewCommentForm = (props) => {
   const commentTextRef = useRef();
 
-  const { sendRequest, status, error } = useHttp(addComment, true);
+  const { sendRequest, status, error } = useHttp(addComment);
   const { onAddedComment } = props;
 
   useEffect(() => {
     if (status === "completed" && !error) {
       onAddedComment();
     }
-  }, []);
+  }, [status, error, onAddedComment]);
   const submitFormHandler = (event) => {
     event.preventDefault();
 
@@ -27,7 +27,7 @@ const NewCommentForm = (props) => {
 
     sendRequest({
       commentData: { text: enteredValue },
-      quoteId: props.quoteId,
+      quoteId: props.quoteId ,
     });
   };
 
